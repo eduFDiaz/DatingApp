@@ -33,7 +33,7 @@ export class NavComponent implements OnInit {
   }
 
   Logout() {
-    localStorage.removeItem('token');
+    this.authService.Logout();
     this.alertify.message('Logged out');
   }
 }
