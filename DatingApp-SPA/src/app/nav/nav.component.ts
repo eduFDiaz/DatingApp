@@ -14,7 +14,7 @@ export class NavComponent implements OnInit {
     password: 'password'
   };
 
-  constructor(private authService: AuthService, private alertify: AlertifyService) { }
+  constructor(public authService: AuthService, private alertify: AlertifyService) { }
 
   ngOnInit() {
   }
