@@ -1,3 +1,4 @@
+import { AuthGuard } from './_guards/auth.guard';
 import { MemberListComponent } from './member-list/member-list.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -9,9 +10,9 @@ import { ListsComponent } from './lists/lists.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full'},
   { path: 'home', component: HomeComponent},
-  { path: 'members', component: MemberListComponent},
-  { path: 'lists', component: ListsComponent},
-  { path: 'messages', component: MessagesComponent},
+  { path: 'members', component: MemberListComponent, canActivate: [AuthGuard]},
+  { path: 'lists', component: ListsComponent, canActivate: [AuthGuard]},
+  { path: 'messages', component: MessagesComponent, canActivate: [AuthGuard]},
   { path: '**', redirectTo: 'home', pathMatch: 'full'},
 ];
 
