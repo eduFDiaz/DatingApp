@@ -10,9 +10,15 @@ import { ListsComponent } from './lists/lists.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full'},
   { path: 'home', component: HomeComponent},
-  { path: 'members', component: MemberListComponent, canActivate: [AuthGuard]},
-  { path: 'lists', component: ListsComponent, canActivate: [AuthGuard]},
-  { path: 'messages', component: MessagesComponent, canActivate: [AuthGuard]},
+  {
+    path: '',
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthGuard],
+    children: [
+      { path: 'members', component: MemberListComponent},
+      { path: 'lists', component: ListsComponent},
+      { path: 'messages', component: MessagesComponent}]
+  },
   { path: '**', redirectTo: 'home', pathMatch: 'full'},
 ];
 
