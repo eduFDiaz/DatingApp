@@ -8,6 +8,7 @@ import { AlertifyService } from '../_services/alertify.service';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
+  isDarkTheme = false;
 
   model: any = {
     username: 'john',
@@ -36,4 +37,12 @@ export class NavComponent implements OnInit {
     this.authService.Logout();
     this.alertify.message('Logged out');
   }
+
+  changeTheme(): void {
+    if (this.isDarkTheme) {
+       this.isDarkTheme = false;
+    } else {
+       this.isDarkTheme = true;
+    }
+ }
 }
