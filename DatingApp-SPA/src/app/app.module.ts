@@ -19,6 +19,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { UserService } from './_services/user.service';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { JwtTokenModule } from './jwtToken/jwtToken.module';
+import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 
 @NgModule({
    declarations: [
@@ -29,7 +30,8 @@ import { JwtTokenModule } from './jwtToken/jwtToken.module';
       MemberListComponent,
       ListsComponent,
       MessagesComponent,
-      MemberCardComponent
+      MemberCardComponent,
+      MemberDetailComponent
    ],
    imports: [
       BrowserModule,
