@@ -13,7 +13,7 @@ export class UserService {
 
   httpOptions = {
     headers: new HttpHeaders({
-      'Authorization': 'Bearer ' + this.authService.token
+      Authorization: 'Bearer ' + this.authService.token
     })
   };
 
