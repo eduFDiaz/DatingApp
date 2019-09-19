@@ -11,6 +11,7 @@ import { UserService } from 'src/app/_services/user.service';
 })
 export class MemberDetailComponent implements OnInit {
   user: User;
+  isDataLoaded = false;
 
   constructor(private userService: UserService,
               private alertify: AlertifyService,
@@ -23,7 +24,7 @@ export class MemberDetailComponent implements OnInit {
   LoadUser() {
     this.userService.getUser(+this.route.snapshot.params.id)
     .subscribe(
-      (user: User) => { this.user = user; }
+      (user: User) => { this.user = user; this.isDataLoaded = true; }
       , error => this.alertify.error(error));
   }
 }
