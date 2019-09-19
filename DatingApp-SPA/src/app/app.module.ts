@@ -1,12 +1,12 @@
-import { AuthGuard } from './_guards/auth.guard';
 import { ErrorInterceptorProvider } from './_services/error.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
+import { AuthGuard } from './_guards/auth.guard';
 import { AppRoutingModule } from './routes';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
 import { NavComponent } from './nav/nav.component';
 import { AuthService } from './_services/auth.service';
 import { HomeComponent } from './home/home.component';
@@ -18,6 +18,7 @@ import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { UserService } from './_services/user.service';
 import { MemberCardComponent } from './members/member-card/member-card.component';
+import { JwtTokenModule } from './jwtToken/jwtToken.module';
 
 @NgModule({
    declarations: [
@@ -35,7 +36,8 @@ import { MemberCardComponent } from './members/member-card/member-card.component
       AppRoutingModule,
       HttpClientModule,
       FormsModule,
-      BsDropdownModule.forRoot()
+      BsDropdownModule.forRoot(),
+      JwtTokenModule
    ],
    providers: [
       AuthService,

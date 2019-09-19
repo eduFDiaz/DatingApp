@@ -11,21 +11,13 @@ import { Observable } from 'rxjs';
 export class UserService {
   baseUrl = environment.apiUrl;
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      Authorization: 'Bearer ' + this.authService.token
-    })
-  };
-
-  users: User[];
-
   constructor(private http: HttpClient, private authService: AuthService) { }
 
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.baseUrl + 'users/', this.httpOptions);
+    return this.http.get<User[]>(this.baseUrl + 'users/');
   }
 
   getUser(id: number): Observable<User> {
-    return this.http.get<User>(this.baseUrl + 'users/' + id.toString(), this.httpOptions);
+    return this.http.get<User>(this.baseUrl + 'users/' + id.toString());
   }
 }
