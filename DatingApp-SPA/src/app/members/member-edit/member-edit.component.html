@@ -1,0 +1,4 @@
+<div class="container" *ngIf="isDataLoaded;else loading">
+  {{user.knownAs}}
+</div>
+<ng-template #loading>Loading</ng-template>

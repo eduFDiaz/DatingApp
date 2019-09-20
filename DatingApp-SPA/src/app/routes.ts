@@ -1,3 +1,4 @@
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { NgModule } from '@angular/core';
@@ -18,6 +19,7 @@ const routes: Routes = [
     children: [
       { path: 'members', component: MemberListComponent},
       { path: 'members/:id', component: MemberDetailComponent},
+      { path: 'member/edit', component: MemberEditComponent},
       { path: 'lists', component: ListsComponent},
       { path: 'messages', component: MessagesComponent}]
   },

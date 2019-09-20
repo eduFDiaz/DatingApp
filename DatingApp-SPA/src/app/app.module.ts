@@ -21,6 +21,7 @@ import { UserService } from './_services/user.service';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { JwtTokenModule } from './jwtToken/jwtToken.module';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
 
 class CustomHammerConfig extends HammerGestureConfig  {
   overrides = {
@@ -39,7 +40,8 @@ class CustomHammerConfig extends HammerGestureConfig  {
       ListsComponent,
       MessagesComponent,
       MemberCardComponent,
-      MemberDetailComponent
+      MemberDetailComponent,
+      MemberEditComponent
    ],
    imports: [
       BrowserModule,
