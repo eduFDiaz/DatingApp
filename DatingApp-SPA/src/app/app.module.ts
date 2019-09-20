@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { NgxGalleryModule } from 'ngx-gallery';
 
 import { AuthGuard } from './_guards/auth.guard';
 import { AppRoutingModule } from './routes';
@@ -40,6 +41,7 @@ import { MemberDetailComponent } from './members/member-detail/member-detail.com
       FormsModule,
       BsDropdownModule.forRoot(),
       TabsModule.forRoot(),
+      NgxGalleryModule,
       JwtTokenModule
    ],
    providers: [
