@@ -23,6 +23,7 @@ import { MemberCardComponent } from './members/member-card/member-card.component
 import { JwtTokenModule } from './jwtToken/jwtToken.module';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { PreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
 
 class CustomHammerConfig extends HammerGestureConfig  {
   overrides = {
@@ -61,6 +62,7 @@ class CustomHammerConfig extends HammerGestureConfig  {
       ErrorInterceptorProvider,
       AlertifyService,
       AuthGuard,
+      PreventUnsavedChangesGuard,
       { provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig }
    ],
    bootstrap: [

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { User } from 'src/app/_models/User';
 import { AlertifyService } from 'src/app/_services/alertify.service';
@@ -15,6 +15,12 @@ export class MemberEditComponent implements OnInit {
   @ViewChild('editForm',{static: false}) editForm: NgForm;
   user: User;
   isDataLoaded = false;
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any) {
+    if (this.editForm.dirty) {
+      $event.returnValue = true;
+    }
+  }
   constructor(private userService: UserService,
               private alertify: AlertifyService,
               private authService: AuthService,
