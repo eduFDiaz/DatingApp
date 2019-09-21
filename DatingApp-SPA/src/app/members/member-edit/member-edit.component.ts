@@ -38,12 +38,14 @@ export class MemberEditComponent implements OnInit {
     , () => { this.isDataLoaded = true; });
   }
 
-  updateUser(){
-    console.log(this.user);
-    this.alertify.success('Your profile has been updated!');
-    this.editForm.reset(
-      this.user
+  updateUser() {
+    this.userService.updateUser(this.authService.decodedToken.nameid, this.user).subscribe(
+      (response: User) => {
+        this.alertify.success('Your profile has been updated!');
+        this.editForm.reset(this.user);
+      }
+    , error => { this.alertify.error(error); }
+    , () => { this.isDataLoaded = true; }
     );
   }
-
 }
