@@ -44,8 +44,10 @@ export class NavComponent implements OnInit {
 
   changeTheme(): void {
     if (this.isDarkTheme) {
+       document.getElementById('global-theme').setAttribute('href', 'assets/styles/united/bootstrap.min.css');
        this.isDarkTheme = false;
     } else {
+       document.getElementById('global-theme').setAttribute('href', 'assets/styles/darkly/bootstrap.min.css');
        this.isDarkTheme = true;
     }
  }
