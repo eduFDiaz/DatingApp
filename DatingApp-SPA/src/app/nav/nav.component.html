@@ -28,8 +28,8 @@
     <button class="btn btn-success my-2 my-sm-0" [disabled]="!loginForm.valid" type="submit">Login</button>
   </form>
   </div>
-  <div class="custom-control custom-switch ml-2">
-      <input (click)="changeTheme()" type="checkbox" class="custom-control-input" id="customSwitch1">
-      <label class="custom-control-label" for="customSwitch1">🌛</label>
+  <div class="ml-2 d-flex">
+      <ui-switch size="small" (change)="changeTheme()"></ui-switch>
+      <span>🌛</span>
   </div>
 </nav>

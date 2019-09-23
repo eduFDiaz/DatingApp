@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { UiSwitchModule } from 'ngx-toggle-switch';
 
 import { AuthGuard } from './_guards/auth.guard';
 import { AppRoutingModule } from './routes';
@@ -54,7 +55,8 @@ class CustomHammerConfig extends HammerGestureConfig  {
       TabsModule.forRoot(),
       NgxGalleryModule,
       JwtTokenModule,
-      NgxSpinnerModule
+      NgxSpinnerModule,
+      UiSwitchModule
    ],
    providers: [
       AuthService,
