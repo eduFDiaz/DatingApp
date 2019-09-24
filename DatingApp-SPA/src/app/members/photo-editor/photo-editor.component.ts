@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { AuthService } from './../../_services/auth.service';
 import { environment } from './../../../environments/environment';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Photo } from 'src/app/_models/Photo';
 import { FileUploader } from 'ng2-file-upload';
 import { url } from 'inspector';
@@ -15,6 +15,7 @@ import { UserService } from 'src/app/_services/user.service';
 })
 export class PhotoEditorComponent implements OnInit {
   @Input() photos: Photo[];
+  @Output() mainPhotoChanged = new EventEmitter<string>();
 
   uploader: FileUploader;
   hasBaseDropZoneOver  = false;
@@ -66,7 +67,8 @@ export class PhotoEditorComponent implements OnInit {
       this.currentMainPhoto = this.photos.filter(p => p.isMain === true)[0];
       this.currentMainPhoto.isMain = false;
       photo.isMain = true;
+      this.mainPhotoChanged.emit(photo.url);
     }, error => { this.alertify.error(error); }
-     , () => { console.log(this.photos); });
+     , () => {});
   }
 }
