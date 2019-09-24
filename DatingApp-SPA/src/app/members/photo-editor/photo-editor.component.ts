@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { AuthService } from './../../_services/auth.service';
 import { environment } from './../../../environments/environment';
@@ -5,6 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Photo } from 'src/app/_models/Photo';
 import { FileUploader } from 'ng2-file-upload';
 import { url } from 'inspector';
+import { UserService } from 'src/app/_services/user.service';
 
 @Component({
   selector: 'app-photo-editor',
@@ -18,7 +20,7 @@ export class PhotoEditorComponent implements OnInit {
   hasBaseDropZoneOver  = false;
   baseUrl = environment.apiUrl;
 
-  constructor(private authService: AuthService, private alertify: AlertifyService) { }
+  constructor(private authService: AuthService, private userService: UserService, private alertify: AlertifyService) { }
 
   ngOnInit() {
     this.initializeUploader();
@@ -42,7 +44,7 @@ export class PhotoEditorComponent implements OnInit {
     this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
 
     this.uploader.onSuccessItem = (item, response, status, headers) => {
-      if(response) {
+      if (response) {
         const res: Photo = JSON.parse(response);
         const photo = {
           id: res.id,
@@ -54,5 +56,13 @@ export class PhotoEditorComponent implements OnInit {
         this.photos.push(photo);
       }
     }
+  }
+
+  setAsMainPhoto(photo: Photo) {
+    this.userService.setAsMainPhoto(this.authService.decodedToken.nameid, photo.id)
+    .subscribe(response => {
+      console.log(response);
+    }, error => { this.alertify.error(error)}
+     , () => { console.log(this.photos); });
   }
 }
