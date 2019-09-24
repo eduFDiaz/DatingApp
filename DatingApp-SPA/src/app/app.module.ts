@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { UiSwitchModule } from 'ngx-toggle-switch';
+import {FileUploadModule} from 'ng2-file-upload';
 
 import { AuthGuard } from './_guards/auth.guard';
 import { AppRoutingModule } from './routes';
@@ -58,7 +59,8 @@ class CustomHammerConfig extends HammerGestureConfig  {
       NgxGalleryModule,
       JwtTokenModule,
       NgxSpinnerModule,
-      UiSwitchModule
+      UiSwitchModule,
+      FileUploadModule
    ],
    providers: [
       AuthService,
