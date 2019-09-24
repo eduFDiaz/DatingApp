@@ -20,6 +20,8 @@ export class PhotoEditorComponent implements OnInit {
   hasBaseDropZoneOver  = false;
   baseUrl = environment.apiUrl;
 
+  currentMainPhoto: Photo;
+
   constructor(private authService: AuthService, private userService: UserService, private alertify: AlertifyService) { }
 
   ngOnInit() {
@@ -60,9 +62,11 @@ export class PhotoEditorComponent implements OnInit {
 
   setAsMainPhoto(photo: Photo) {
     this.userService.setAsMainPhoto(this.authService.decodedToken.nameid, photo.id)
-    .subscribe(response => {
-      console.log(response);
-    }, error => { this.alertify.error(error)}
+    .subscribe(() => {
+      this.currentMainPhoto = this.photos.filter(p => p.isMain === true)[0];
+      this.currentMainPhoto.isMain = false;
+      photo.isMain = true;
+    }, error => { this.alertify.error(error); }
      , () => { console.log(this.photos); });
   }
 }
