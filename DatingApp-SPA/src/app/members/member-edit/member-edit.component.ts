@@ -12,9 +12,10 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./member-edit.component.css']
 })
 export class MemberEditComponent implements OnInit {
-  @ViewChild('editForm',{static: false}) editForm: NgForm;
+  @ViewChild('editForm', {static: false}) editForm: NgForm;
   user: User;
   isDataLoaded = false;
+
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
     if (this.editForm.dirty) {
@@ -34,6 +35,7 @@ export class MemberEditComponent implements OnInit {
   loadUser() {
     this.userService.getUser(this.authService.decodedToken.nameid).subscribe((user: User) => {
       this.user = user;
+      this.authService.photoUrl.subscribe(photo => this.user.photoUrl = photo);
     }, error => this.alertify.error(error)
     , () => { this.isDataLoaded = true; });
   }

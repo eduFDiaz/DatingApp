@@ -13,7 +13,6 @@ import { UserService } from 'src/app/_services/user.service';
 })
 export class PhotoEditorComponent implements OnInit {
   @Input() photos: Photo[];
-  @Output() mainPhotoChanged = new EventEmitter<string>();
 
   uploader: FileUploader;
   hasBaseDropZoneOver  = false;
@@ -56,7 +55,7 @@ export class PhotoEditorComponent implements OnInit {
         };
         this.photos.push(photo);
       }
-    }
+    };
   }
 
   setAsMainPhoto(photo: Photo) {
@@ -65,7 +64,7 @@ export class PhotoEditorComponent implements OnInit {
       this.currentMainPhoto = this.photos.filter(p => p.isMain === true)[0];
       this.currentMainPhoto.isMain = false;
       photo.isMain = true;
-      this.mainPhotoChanged.emit(photo.url);
+      this.authService.changeMemberPhoto(photo.url);
     }, error => { this.alertify.error(error); }
      , () => {});
   }

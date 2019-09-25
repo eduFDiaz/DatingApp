@@ -15,10 +15,12 @@ export class NavComponent implements OnInit {
     username: '',
     password: ''
   };
+  photoUrl: string;
 
   constructor(public authService: AuthService, private alertify: AlertifyService, private router: Router) { }
 
   ngOnInit() {
+    this.authService.currentPhotoUrl.subscribe(photoUrl => this.photoUrl = photoUrl);
   }
 
   Login() {
