@@ -12,8 +12,8 @@ export class NavComponent implements OnInit {
   isDarkTheme = false;
 
   model: any = {
-    username: 'john',
-    password: 'password'
+    username: '',
+    password: ''
   };
 
   constructor(public authService: AuthService, private alertify: AlertifyService, private router: Router) { }

@@ -1,11 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { AuthService } from './../../_services/auth.service';
 import { environment } from './../../../environments/environment';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Photo } from 'src/app/_models/Photo';
 import { FileUploader } from 'ng2-file-upload';
-import { url } from 'inspector';
 import { UserService } from 'src/app/_services/user.service';
 
 @Component({

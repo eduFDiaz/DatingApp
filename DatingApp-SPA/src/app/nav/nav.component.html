@@ -13,6 +13,9 @@
     </li>
   </ul>
   <div *ngIf="LoggedIn()" dropdown class="dropdown">
+    <span class="mr-2">
+      <img src="{{this.authService.loggedInUser.photoUrl}}">
+    </span>
     <a dropdownToggle (click)="false" class="dropdown-toggle text-light">
       Welcome {{ authService.decodedToken.unique_name | titlecase }}
     </a>
