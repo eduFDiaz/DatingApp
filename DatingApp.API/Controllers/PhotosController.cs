@@ -56,6 +56,7 @@ namespace DatingApp.API.Controllers
         public async Task<IActionResult> AddPhotoForUser(int userId,
                             [FromForm]PhotoForCreationDto photoForCreationDto)
         {
+            // Check if the user is authenticated
             if(userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)){
                 return Unauthorized();
             }
@@ -128,6 +129,33 @@ namespace DatingApp.API.Controllers
                 return NoContent();
 
             return BadRequest("Could not set photo to main");
+        }
+
+        // Delete photo using id as the photo id
+        [HttpPost("{id}/Delete")]
+        public async Task<IActionResult> Delete(int userId, int id)
+        {
+            // Checks if the user is authorized
+            if(userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)){
+                return Unauthorized();
+            }
+
+            // Checks if the picture belongs to the user
+            var user = await _repo.GetUser(userId);
+            if(!user.Photos.Any(p => p.Id == id))
+                return Unauthorized();
+             
+            // Check if photo is set as main, don't delete if that is true
+            var photoFromRepo = await _repo.GetPhoto(id);
+            if(photoFromRepo.IsMain)
+                return BadRequest("Cannot delete the main photo");
+            
+            _repo.Delete(photoFromRepo);
+
+            if(await _repo.SaveAll())
+                return NoContent();
+
+            return BadRequest("Could not delete the photo");
         }
     }
 }
