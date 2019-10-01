@@ -156,13 +156,16 @@ namespace DatingApp.API.Controllers
                 var deleteParams = new DeletionParams(photoFromRepo.PublicId);
                 var result = _cloudinary.Destroy(deleteParams);
 
+                // The Result from Destroying the cloudinary image is Ok
                 if(result.Result == "ok") {
                     _repo.Delete(photoFromRepo);
                 }
             } else {
+                // if the photo is not hosted on cloudinary
                 _repo.Delete(photoFromRepo);
             }
             
+            // Saving changes to repo
             if(await _repo.SaveAll())
                 return Ok();
 

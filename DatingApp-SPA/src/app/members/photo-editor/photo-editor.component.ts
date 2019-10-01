@@ -15,7 +15,7 @@ export class PhotoEditorComponent implements OnInit {
   @Input() photos: Photo[];
 
   uploader: FileUploader;
-  hasBaseDropZoneOver  = false;
+  hasBaseDropZoneOver = false;
   baseUrl = environment.apiUrl;
 
   currentMainPhoto: Photo;
@@ -33,7 +33,7 @@ export class PhotoEditorComponent implements OnInit {
   initializeUploader() {
     this.uploader = new FileUploader({
       url: this.baseUrl + 'users/' + this.authService.decodedToken.nameid + '/photos',
-      authToken : 'Bearer ' + this.authService.token,
+      authToken: 'Bearer ' + this.authService.token,
       isHTML5: true,
       allowedFileType: ['image'],
       removeAfterUpload: true,
@@ -60,22 +60,27 @@ export class PhotoEditorComponent implements OnInit {
 
   setAsMainPhoto(photo: Photo) {
     this.userService.setAsMainPhoto(this.authService.decodedToken.nameid, photo.id)
-    .subscribe(() => {
-      this.currentMainPhoto = this.photos.filter(p => p.isMain === true)[0];
-      this.currentMainPhoto.isMain = false;
-      photo.isMain = true;
-      this.authService.changeMemberPhoto(photo.url);
-    }, error => { this.alertify.error(error); }
-     , () => {});
+      .subscribe(() => {
+        this.currentMainPhoto = this.photos.filter(p => p.isMain === true)[0];
+        this.currentMainPhoto.isMain = false;
+        photo.isMain = true;
+        this.authService.changeMemberPhoto(photo.url);
+      }, error => { this.alertify.error(error); }
+        , () => { });
   }
 
   DeletePhoto(photo: Photo) {
+    this.alertify.confirm('Are you sure you want to delete the photo with id: ' + photo.id.toString() + '?',
+    () => this.deletePicture(photo));
+  }
+
+  deletePicture(photo: Photo) {
     this.userService.DeletePhoto(this.authService.decodedToken.nameid, photo.id)
-    .subscribe(() => {
-      const id = this.photos.indexOf(photo);
-      this.photos = this.photos.filter( (data, idx) => idx !== id);
-      this.alertify.success('Photo deleted successfully!');
-    }, error => { this.alertify.error(error); }
-     , () => {});
+      .subscribe(() => {
+        const id = this.photos.indexOf(photo);
+        this.photos = this.photos.filter((data, idx) => idx !== id);
+        this.alertify.success('Photo deleted successfully!');
+      }, error => { this.alertify.error(error); }
+        , () => { });
   }
 }
