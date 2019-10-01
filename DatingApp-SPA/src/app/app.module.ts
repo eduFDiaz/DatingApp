@@ -27,6 +27,8 @@ import { MemberDetailComponent } from './members/member-detail/member-detail.com
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { PreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 class CustomHammerConfig extends HammerGestureConfig  {
   overrides = {
@@ -61,7 +63,9 @@ class CustomHammerConfig extends HammerGestureConfig  {
       NgxSpinnerModule,
       UiSwitchModule,
       FileUploadModule,
-      ReactiveFormsModule
+      ReactiveFormsModule,
+      BsDatepickerModule.forRoot(),
+      BrowserAnimationsModule
    ],
    providers: [
       AuthService,

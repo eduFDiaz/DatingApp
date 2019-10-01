@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { AlertifyService } from '../_services/alertify.service';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker/ngx-bootstrap-datepicker';
 
 @Component({
   selector: 'app-register',
@@ -14,9 +15,15 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   @Output() cancelRegister = new EventEmitter<boolean>();
 
+  // Partial is used because you want to make the config optional
+  bsConfig: Partial<BsDatepickerConfig>;
+
   constructor(private authService: AuthService, private alertify: AlertifyService, private fb: FormBuilder) { }
 
   ngOnInit() {
+    this.bsConfig = {
+      containerClass: 'theme-default'
+    };
     this.createRegisterForm();
   }
 
