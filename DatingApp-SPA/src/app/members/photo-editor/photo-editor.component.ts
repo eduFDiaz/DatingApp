@@ -71,7 +71,9 @@ export class PhotoEditorComponent implements OnInit {
 
   DeletePhoto(photo: Photo) {
     this.alertify.confirm('Are you sure you want to delete the photo with id: ' + photo.id.toString() + '?',
-    () => this.deletePicture(photo));
+    () => {
+      return this.deletePicture(photo);
+    });
   }
 
   deletePicture(photo: Photo) {

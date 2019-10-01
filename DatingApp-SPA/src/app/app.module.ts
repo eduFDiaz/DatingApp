@@ -1,12 +1,12 @@
 import { ErrorInterceptorProvider } from './_services/error.interceptor';
 import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { UiSwitchModule } from 'ngx-toggle-switch';
-import {FileUploadModule} from 'ng2-file-upload';
+import { FileUploadModule } from 'ng2-file-upload';
 
 import { AuthGuard } from './_guards/auth.guard';
 import { AppRoutingModule } from './routes';
@@ -60,7 +60,8 @@ class CustomHammerConfig extends HammerGestureConfig  {
       JwtTokenModule,
       NgxSpinnerModule,
       UiSwitchModule,
-      FileUploadModule
+      FileUploadModule,
+      ReactiveFormsModule
    ],
    providers: [
       AuthService,
