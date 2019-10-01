@@ -132,8 +132,8 @@ namespace DatingApp.API.Controllers
         }
 
         // Delete photo using id as the photo id
-        [HttpPost("{id}/Delete")]
-        public async Task<IActionResult> Delete(int userId, int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePhoto(int userId, int id)
         {
             // Checks if the user is authorized
             if(userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)){
@@ -149,11 +149,22 @@ namespace DatingApp.API.Controllers
             var photoFromRepo = await _repo.GetPhoto(id);
             if(photoFromRepo.IsMain)
                 return BadRequest("Cannot delete the main photo");
-            
-            _repo.Delete(photoFromRepo);
 
+            // Let's check if the photo is storaged at Cloudinary so it can also be
+            // deleted from cloudinary
+            if(photoFromRepo.PublicId != null){
+                var deleteParams = new DeletionParams(photoFromRepo.PublicId);
+                var result = _cloudinary.Destroy(deleteParams);
+
+                if(result.Result == "ok") {
+                    _repo.Delete(photoFromRepo);
+                }
+            } else {
+                _repo.Delete(photoFromRepo);
+            }
+            
             if(await _repo.SaveAll())
-                return NoContent();
+                return Ok();
 
             return BadRequest("Could not delete the photo");
         }

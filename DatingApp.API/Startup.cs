@@ -90,7 +90,7 @@ namespace DatingApp.API
             }
 
             // app.UseHttpsRedirection();
-            // DataSeed.SeedUsers(); // Uncomment to seed the database
+            // DataSeed.SeedUsers(); // Uncomment to seed the database using "DatingApp.API\Data\UserDataSeed.json"
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();
             app.UseMvc();
