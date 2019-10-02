@@ -21,10 +21,10 @@ export class RegisterComponent implements OnInit {
   constructor(private authService: AuthService, private alertify: AlertifyService, private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.bsConfig = {
-      containerClass: 'theme-default'
-    };
-    this.createRegisterForm();
+      this.bsConfig = {
+        containerClass: 'theme-red'
+      };
+      this.createRegisterForm();
   }
 
   // A custom validator is just a function in angular reactive forms
@@ -46,8 +46,7 @@ export class RegisterComponent implements OnInit {
   }
 
   Register() {
-    console.log(this.registerForm.value);
-    /* this.authService.Register(this.model).subscribe(
+      this.authService.Register(this.registerForm.value).subscribe(
       response => {
         this.alertify.success('registration successful');
       },
