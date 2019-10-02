@@ -1,3 +1,4 @@
+import { Photo } from 'src/app/_models/Photo';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
@@ -39,8 +40,8 @@ export class AuthService {
     }
   }
 
-  Login(model: any) {
-    return this.http.post(this.baseUrl + 'login', model)
+  Login(user: User) {
+    return this.http.post(this.baseUrl + 'login', user)
       .pipe(
         map((response: any) => {
           if (response) {
@@ -54,8 +55,8 @@ export class AuthService {
       );
   }
 
-  Register(model: any) {
-    return this.http.post(this.baseUrl + 'register', model);
+  Register(user: User) {
+    return this.http.post(this.baseUrl + 'register', user);
   }
 
   LoggedIn() {

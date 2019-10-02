@@ -3,6 +3,8 @@ import { AuthService } from '../_services/auth.service';
 import { AlertifyService } from '../_services/alertify.service';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker/ngx-bootstrap-datepicker';
+import { User } from '../_models/User';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -10,15 +12,15 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker/ngx-bootstrap-datep
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-
-  model: any = {};
+  /* Register component */
+  user: User;
   registerForm: FormGroup;
   @Output() cancelRegister = new EventEmitter<boolean>();
 
   // Partial is used because you want to make the config optional
   bsConfig: Partial<BsDatepickerConfig>;
 
-  constructor(private authService: AuthService, private alertify: AlertifyService, private fb: FormBuilder) { }
+  constructor(private authService: AuthService, private alertify: AlertifyService, private fb: FormBuilder, private router: Router) { }
 
   ngOnInit() {
       this.bsConfig = {
@@ -46,14 +48,22 @@ export class RegisterComponent implements OnInit {
   }
 
   Register() {
+    if (this.registerForm.valid) {
       this.authService.Register(this.registerForm.value).subscribe(
-      response => {
-        this.alertify.success('registration successful');
-      },
-      error => {
-        this.alertify.error(error);
-      }
-    ); */
+        response => {
+          this.user = Object.assign({}, this.registerForm.value);
+          this.alertify.success('Registration successful');
+        },
+        error => {
+          this.alertify.error(error);
+        }, () => {
+          this.authService.Login(this.user).subscribe( () => {
+            this.alertify.success('You\'re now logged in');
+            this.router.navigate(['/members']);
+          });
+        }
+      );
+    }
   }
 
   Cancel() {

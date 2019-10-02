@@ -7,7 +7,7 @@
       <div class="card">
         <img
           class="card-img-top img-thumbnail"
-          src="{{ user.photoUrl }}"
+          src="{{ user.photoUrl  || '../../../assets/avatar.png'}}"
           alt="{{ user.knownAs }}"
         />
         <div class="card-body">
@@ -39,13 +39,13 @@
     <div class="col-sm-8">
       <div class="tab-panel">
         <tabset [justified]="true" class="member-tabset">
-          <tab heading="About {{ user.knownAs }}">
+          <tab *ngIf="user.introduction!=null" heading="About {{ user.knownAs }}">
             <h4>Description</h4>
             <p>{{ user.introduction }}</p>
             <h4>Looking for</h4>
             <p>{{ user.lookingFor }}</p>
           </tab>
-          <tab heading="Interests">
+          <tab *ngIf="user.interests!=null" heading="Interests">
             <h4>Interests</h4>
             <p>{{ user.interests }}</p>
           </tab>
