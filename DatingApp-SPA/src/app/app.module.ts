@@ -29,6 +29,7 @@ import { PreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.gu
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {TimeAgoPipe} from 'time-ago-pipe';
 
 class CustomHammerConfig extends HammerGestureConfig  {
   overrides = {
@@ -49,7 +50,8 @@ class CustomHammerConfig extends HammerGestureConfig  {
       MemberCardComponent,
       MemberDetailComponent,
       MemberEditComponent,
-      PhotoEditorComponent
+      PhotoEditorComponent,
+      TimeAgoPipe
    ],
    imports: [
       BrowserModule,
