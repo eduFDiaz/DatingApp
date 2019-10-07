@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using DatingApp.API.Helpers;
 using DatingApp.API.Models;
@@ -26,7 +27,7 @@ namespace DatingApp.API.Data
 
         public async Task<Photo> GetMainPhotoForUser(int userId)
         {
-            var photo = await _context.Photos.Where(u => u.UserId == userId).FirstOrDefaultAsync(p => p.IsMain);;
+            var photo = await _context.Photos.Where(u => u.UserId == userId).FirstOrDefaultAsync(p => p.IsMain);
             return photo;
         }
 
@@ -43,8 +44,10 @@ namespace DatingApp.API.Data
         }
 
         public async Task<PagedList<User>> GetUsers(UserParams userParams)
-        {
-            var users = _context.Users.Include(p => p.Photos);
+        {  
+            var users = _context.Users.Include(p => p.Photos).AsQueryable();
+            users = users.Where( user => user.Id != userParams.UserId);
+            users = users.Where( user => user.Gender == userParams.Gender);
             return await PagedList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
         }
 
