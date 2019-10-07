@@ -1,6 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace DatingApp.API.Helpers
 {
@@ -18,8 +19,11 @@ namespace DatingApp.API.Helpers
         // Will add a paginationHeader class to the headers of the response returned
         {
             var paginationHeader = new PaginationHeader(currentPage, itemsPerPage, totalItems, totalPages);
+            // The vars returned in the pagination header need to be camel case because that's what angular uses
+            var camelCaseFormatter = new JsonSerializerSettings();
+            camelCaseFormatter.ContractResolver = new CamelCasePropertyNamesContractResolver();
             // Convert our paginationHeader to string values
-            response.Headers.Add("Pagination", JsonConvert.SerializeObject(paginationHeader));
+            response.Headers.Add("Pagination", JsonConvert.SerializeObject(paginationHeader, camelCaseFormatter));
             // Expose the pagination header to cors errors associated with this
             response.Headers.Add("Access-Control-Expose-Headers", "Pagination");
         }
