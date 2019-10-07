@@ -7,6 +7,7 @@ import { NgxGalleryModule } from 'ngx-gallery';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { UiSwitchModule } from 'ngx-toggle-switch';
 import { FileUploadModule } from 'ng2-file-upload';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 import { AuthGuard } from './_guards/auth.guard';
 import { AppRoutingModule } from './routes';
@@ -67,7 +68,8 @@ class CustomHammerConfig extends HammerGestureConfig  {
       FileUploadModule,
       ReactiveFormsModule,
       BsDatepickerModule.forRoot(),
-      BrowserAnimationsModule
+      BrowserAnimationsModule,
+      PaginationModule.forRoot()
    ],
    providers: [
       AuthService,
