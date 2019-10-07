@@ -15,13 +15,19 @@ export class UserService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-  getUsers(pageNumber?, itemsPerPage?): Observable<PaginatedResult<User[]>> {
+  getUsers(pageNumber?, itemsPerPage?, userParams?): Observable<PaginatedResult<User[]>> {
     const paginatedResult: PaginatedResult<User[]> = new PaginatedResult<User[]>();
     let httpParams = new HttpParams();
 
     if ( pageNumber != null && itemsPerPage != null) {
       httpParams = httpParams.append('pageNumber', pageNumber);
       httpParams = httpParams.append('pageSize', itemsPerPage);
+    }
+
+    if ( userParams != null) {
+      httpParams = httpParams.append('minAge', userParams.minAge);
+      httpParams = httpParams.append('maxAge', userParams.maxAge);
+      httpParams = httpParams.append('gender', userParams.gender);
     }
     // Now we observe response and not body by default because response will contain pagination and results
     return this.http.get<User[]>(this.baseUrl + 'users/', { observe: 'response', params: httpParams})
