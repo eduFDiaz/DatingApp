@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -48,6 +49,12 @@ namespace DatingApp.API.Data
             var users = _context.Users.Include(p => p.Photos).AsQueryable();
             users = users.Where( user => user.Id != userParams.UserId);
             users = users.Where( user => user.Gender == userParams.Gender);
+
+            var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1);
+            var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
+
+            users = users.Where( user => user.DateOfBirth >= minDob && user.DateOfBirth <= maxDob);
+            
             return await PagedList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
         }
 
