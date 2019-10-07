@@ -1,9 +1,11 @@
+import { PaginatedResult } from './../_models/pagination';
 import { AuthService } from './auth.service';
 import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { User } from '../_models/User';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +15,25 @@ export class UserService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.baseUrl + 'users/');
+  getUsers(pageNumber?, itemsPerPage?): Observable<PaginatedResult<User[]>> {
+    const paginatedResult: PaginatedResult<User[]> = new PaginatedResult<User[]>();
+    let httpParams = new HttpParams();
+
+    if ( pageNumber != null && itemsPerPage != null) {
+      httpParams = httpParams.append('pageNumber', pageNumber);
+      httpParams = httpParams.append('pageSize', itemsPerPage);
+    }
+    // Now we observe response and not body by default because response will contain pagination and results
+    return this.http.get<User[]>(this.baseUrl + 'users/', { observe: 'response', params: httpParams})
+    .pipe(
+      map( response => {
+        paginatedResult.result = response.body;
+        if (response.headers.get('Pagination') != null) {
+          paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+        }
+        return paginatedResult;
+      })
+    );
   }
 
   getUser(id: number): Observable<User> {

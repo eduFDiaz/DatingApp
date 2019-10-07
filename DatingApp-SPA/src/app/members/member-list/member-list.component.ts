@@ -1,3 +1,4 @@
+import { PaginatedResult } from './../../_models/pagination';
 import { User } from '../../_models/User';
 import { UserService } from '../../_services/user.service';
 import { Component, OnInit } from '@angular/core';
@@ -10,6 +11,8 @@ import { AlertifyService } from '../../_services/alertify.service';
 })
 export class MemberListComponent implements OnInit {
   users: User[];
+  pageNumber = 1;
+  pageSize = 5;
   constructor(private userService: UserService, private alertify: AlertifyService) {
   }
 
@@ -18,8 +21,8 @@ export class MemberListComponent implements OnInit {
   }
 
   loadUsers() {
-    this.userService.getUsers().subscribe((users: User[]) => {
-      this.users = users;
+    this.userService.getUsers(this.pageNumber, this.pageSize).subscribe((response: PaginatedResult<User[]>) => {
+      this.users = response.result;
     }, error => this.alertify.error(error));
   }
 }
