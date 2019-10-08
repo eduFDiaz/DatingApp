@@ -54,6 +54,19 @@ namespace DatingApp.API.Data
             var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
 
             users = users.Where( user => user.DateOfBirth >= minDob && user.DateOfBirth <= maxDob);
+
+            if (!string.IsNullOrEmpty(userParams.OrderBy))
+            {
+                switch (userParams.OrderBy)
+                {
+                    case "created":
+                        users = users.OrderByDescending(user => user.Created );
+                        break;
+                    default:
+                        users = users.OrderByDescending(user => user.LastActive );
+                        break;
+                }
+            }
             
             return await PagedList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
         }
