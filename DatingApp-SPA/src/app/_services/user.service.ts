@@ -28,6 +28,7 @@ export class UserService {
       httpParams = httpParams.append('minAge', userParams.minAge);
       httpParams = httpParams.append('maxAge', userParams.maxAge);
       httpParams = httpParams.append('gender', userParams.gender);
+      httpParams = httpParams.append('orderBy', userParams.orderBy);
     }
     // Now we observe response and not body by default because response will contain pagination and results
     return this.http.get<User[]>(this.baseUrl + 'users/', { observe: 'response', params: httpParams})
