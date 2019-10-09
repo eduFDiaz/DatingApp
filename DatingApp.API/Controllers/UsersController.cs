@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System;
 using DatingApp.API.Helpers;
+using DatingApp.API.Models;
 
 namespace DatingApp.API.Controllers
 {
@@ -75,6 +76,39 @@ namespace DatingApp.API.Controllers
             }
 
             throw new Exception($"Updating user with id={id} failed on save");
+        }
+
+        [HttpPost("{id}/like/{recipientId}")]
+        public async Task<IActionResult> likeUser(int id, int recipientId)
+        {
+            // User id is matched to the id of the token that was sent to avoid
+            // people from liking an user impersonation another user
+            if(id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)){
+                return Unauthorized();
+            }
+
+            var recipientFromRepo = await _repo.GetUser(recipientId);
+            if(recipientFromRepo == null)
+            {
+                return NotFound();
+            }
+
+            var likeFromRepo = await _repo.GetLike(id, recipientId);
+            if (likeFromRepo!=null) {
+                return BadRequest($"You already liked {recipientFromRepo.KnownAs}");
+            }
+
+            var newLike = new Like{
+                LikerId = id,
+                LikeeId = recipientId
+            };
+
+            _repo.Add<Like>(newLike);
+            if (await _repo.SaveAll()){
+                return Ok();
+            } 
+
+            return BadRequest($"Failed to like {recipientFromRepo.KnownAs}");
         }
     }
 }

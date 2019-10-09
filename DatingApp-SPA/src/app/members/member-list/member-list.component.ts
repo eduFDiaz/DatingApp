@@ -31,6 +31,8 @@ export class MemberListComponent implements OnInit {
     this.userParams.minAge = 18;
     this.userParams.maxAge = 99;
     this.userParams.orderBy = 'lastActive';
+    this.userParams.likers = 'false';
+    this.userParams.likees = 'false';
     this.loadUsers();
   }
 
@@ -39,6 +41,8 @@ export class MemberListComponent implements OnInit {
     this.userParams.minAge = 18;
     this.userParams.maxAge = 99;
     this.userParams.orderBy = 'lastActive';
+    this.userParams.likers = 'false';
+    this.userParams.likees = 'false';
     this.loadUsers();
   }
 
@@ -48,7 +52,7 @@ export class MemberListComponent implements OnInit {
       this.users = response.result;
       this.pagination = response.pagination;
       this.isDataLoaded = true;
-    }, error => this.alertify.error(error));
+    }, error => {this.alertify.error(error);this.isDataLoaded = !this.isDataLoaded});
   }
 
   pageChanged(event: any) {
