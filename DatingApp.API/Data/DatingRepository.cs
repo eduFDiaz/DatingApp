@@ -118,5 +118,20 @@ namespace DatingApp.API.Data
         {
             return await _context.SaveChangesAsync() > 0;
         }
+
+        public async Task<Message> GetMessage(int messageId)
+        {
+            return await _context.Messages.FirstOrDefaultAsync(m => m.Id == messageId);
+        }
+
+        public Task<PagedList<Message>> GetMessagesForUser()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
