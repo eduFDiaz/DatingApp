@@ -1,3 +1,60 @@
-<p>
-  messages works!
-</p>
+<div class="text-center mt-3">
+  <h2>Your messages - {{ pagination.totalItems }} found</h2>
+</div>
+<div *ngIf="isDataLoaded; else loading" class="container mt-3">
+  <form
+    #form="ngForm"
+    (ngSubmit)="loadMessages()"
+    class="d-flex justify-content-center form-inline"
+    novalidate
+  >
+
+    <div class="col">
+        <div class="btn-group float-right">
+          <button [(ngModel)]="messageContainer"
+                  btnRadio="Outbox"
+                  type="button"
+                  name="outbox"
+                  (click)="loadMessages()"
+                  class="btn btn-primary active">Outbox</button>
+          <button [(ngModel)]="messageContainer"
+                  btnRadio="Inbox"
+                  type="button"
+                  name="inbox"
+                  (click)="loadMessages()"
+                  class="btn btn-primary">Inbox</button>
+        </div>
+    </div>
+
+  </form>
+  <br />
+  <div class="d-flex justify-content-center row">
+    <div *ngFor="let message of messages" class="col-lg-2 col-md-3 col-sm-6">
+      <app-member-card [user]="user"></app-member-card>
+    </div>
+  </div>
+  <div class="d-flex justify-content-center">
+    <pagination
+      [boundaryLinks]="true"
+      [totalItems]="pagination.totalItems"
+      [itemsPerPage]="pagination.itemsPerPage"
+      [(ngModel)]="pagination.currentPage"
+      (pageChanged)="pageChanged($event)"
+      previousText="&lsaquo;"
+      nextText="&rsaquo;"
+      firstText="&laquo;"
+      lastText="&raquo;"
+    >
+    </pagination>
+  </div>
+</div>
+<ng-template #loading>
+  <ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="large"
+    color="#fff"
+    type="ball-scale-multiple"
+  >
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+</ng-template>

@@ -1,3 +1,4 @@
+import { Message } from './../_models/Message';
 import { PaginatedResult } from './../_models/pagination';
 import { AuthService } from './auth.service';
 import { environment } from './../../environments/environment';
@@ -68,5 +69,39 @@ export class UserService {
 
   SendLike(id: number, recipient: number) {
     return this.http.post(this.baseUrl + 'users/' + id + '/like/' + recipient, {});
+  }
+
+  GetMessages(id: number, pageNumber?, itemsPerPage?, messageContainer?) {
+    const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<Message[]>();
+    let httpParams = new HttpParams();
+
+    if ( pageNumber != null && itemsPerPage != null) {
+      httpParams = httpParams.append('pageNumber', pageNumber);
+      httpParams = httpParams.append('pageSize', itemsPerPage);
+    }
+
+    switch (messageContainer) {
+      case 'Outbox':
+          httpParams = httpParams.append('MessageContainer', 'Outbox');
+          break;
+      case 'Inbox':
+          httpParams = httpParams.append('MessageContainer', 'Inbox');
+          break;
+      default:
+          httpParams = httpParams.append('MessageContainer', 'Unread');
+          break;
+    }
+
+    return this.http.get<Message[]>(this.baseUrl + 'users/' + id + '/messages',
+                                    { observe: 'response', params: httpParams})
+    .pipe(
+      map( response => {
+        paginatedResult.result = response.body;
+        if (response.headers.get('Pagination') != null) {
+          paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+        }
+        return paginatedResult;
+      })
+    );
   }
 }

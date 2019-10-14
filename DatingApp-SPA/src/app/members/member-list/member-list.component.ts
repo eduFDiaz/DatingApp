@@ -49,10 +49,12 @@ export class MemberListComponent implements OnInit {
   loadUsers() {
     this.userService.getUsers(this.pagination.currentPage, this.pagination.itemsPerPage, this.userParams)
     .subscribe((response: PaginatedResult<User[]>) => {
-      this.users = response.result;
-      this.pagination = response.pagination;
-      this.isDataLoaded = true;
-    }, error => {this.alertify.error(error);this.isDataLoaded = !this.isDataLoaded});
+        this.users = response.result;
+        this.pagination = response.pagination;
+        this.isDataLoaded = true;
+      }
+      , error => {this.alertify.error(error); this.isDataLoaded = !this.isDataLoaded; }
+    );
   }
 
   pageChanged(event: any) {
