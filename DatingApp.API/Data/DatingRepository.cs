@@ -154,9 +154,19 @@ namespace DatingApp.API.Data
             return await PagedList<Message>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);
         }
 
-        public Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId)
+        public async Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId)
         {
-            throw new NotImplementedException();
+            // This will return the conversation between two users, you get messages sent and received to the two users
+            // it will also return the two users and the messages will be ordered by MessageSentDate
+            var messages = await _context.Messages
+                .Include(user => user.Sender).ThenInclude(p => p.Photos)
+                .Include(user => user.Recipient).ThenInclude(p => p.Photos)
+                .Where(message => message.RecipientId == userId && message.SenderId == recipientId
+                          || message.RecipientId == recipientId && message.SenderId == userId)
+                .OrderByDescending(message => message.MessageSentDate)
+                .ToListAsync();;
+
+            return messages;
         }
     }
 }
