@@ -29,11 +29,23 @@ namespace DatingApp.API.Helpers
             {
                 opt.MapFrom(d => d.DateOfBirth.CalculateAge());
             });
+            // CreateMap<Source, Destination>();
             CreateMap<UserForUpdateDto, User>();
             CreateMap<Photo, PhotoForReturnDto>();
             CreateMap<PhotoForCreationDto, Photo>();
             CreateMap<UserForRegisterDto, User>();
+            // ReverseMap() maps one object to the other in the opposite direction as well
             CreateMap<MessageForCreationDto, Message>().ReverseMap();
+
+            // Automapper didn't know how to populate the Photo Urls for this Dto, so
+            // it had to be configured manually
+            CreateMap<Message, MessageToReturnDto>()
+            .ForMember(dest => dest.SenderPhotoUrl, opt => {
+                opt.MapFrom( u => u.Sender.Photos.FirstOrDefault(p => p.IsMain).Url);
+            })
+            .ForMember(dest => dest.RecipientPhotoUrl, opt => {
+                opt.MapFrom( u => u.Recipient.Photos.FirstOrDefault(p => p.IsMain).Url);
+            });
         }
     }
 }
