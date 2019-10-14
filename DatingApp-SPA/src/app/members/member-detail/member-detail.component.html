@@ -1,4 +1,5 @@
-<div *ngIf="isDataLoaded; else loading" class="container mt-4">
+<!-- <div *ngIf="isDataLoaded; else loading" class="container mt-4"> -->
+<div class="container mt-4">
   <div class="row">
     <h1>{{ user.knownAs }}'s Profile:</h1>
   </div>
@@ -30,7 +31,7 @@
           <div class="card-footer">
             <div class="btn-group d-flex">
               <button class="btn btn-primary w-100">Like</button>
-              <button class="btn btn-success w-100">Message</button>
+              <button class="btn btn-success w-100"  (click)="selectTab(1)">Message</button>
             </div>
           </div>
         </div>
@@ -38,7 +39,7 @@
     </div>
     <div class="col-sm-8">
       <div class="tab-panel">
-        <tabset [justified]="true" class="member-tabset">
+        <tabset [justified]="true" class="member-tabset" #memberTabs>
           <tab *ngIf="user.introduction!=null" heading="About {{ user.knownAs }}">
             <h4>Description</h4>
             <p>{{ user.introduction }}</p>

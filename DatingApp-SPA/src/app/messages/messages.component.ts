@@ -15,7 +15,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class MessagesComponent implements OnInit {
   messages: Message[];
   pagination: Pagination;
-  isDataLoaded: boolean;
+  isDataLoaded = false;
   user: User;
   messageContainer = null;
 
@@ -37,7 +37,6 @@ export class MessagesComponent implements OnInit {
         this.messages = response.result;
         this.pagination = response.pagination;
         this.isDataLoaded = true;
-        console.log(response.result);
       }
       , error => {this.alertify.error(error); this.isDataLoaded = !this.isDataLoaded; }
     );

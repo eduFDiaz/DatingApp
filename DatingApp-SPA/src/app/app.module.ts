@@ -1,3 +1,5 @@
+import { MemberMessagesResolver } from './_resolvers/member-messages.resolver';
+import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 import { ErrorInterceptorProvider } from './_services/error.interceptor';
 import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -82,6 +84,8 @@ class CustomHammerConfig extends HammerGestureConfig  {
       AlertifyService,
       AuthGuard,
       PreventUnsavedChangesGuard,
+      MemberDetailResolver,
+      MemberMessagesResolver,
       { provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig }
    ],
    bootstrap: [

@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { TabsetComponent } from 'ngx-bootstrap';
+
 import { User } from 'src/app/_models/User';
 import { AlertifyService } from 'src/app/_services/alertify.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd } from '@angular/router';
 import { UserService } from 'src/app/_services/user.service';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -13,18 +15,27 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class MemberDetailComponent implements OnInit {
   user: User;
-  isDataLoaded = false;
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
+  @ViewChild('memberTabs', { static: true }) memberTabs: TabsetComponent;
 
   constructor(private userService: UserService,
               private alertify: AlertifyService,
               private route: ActivatedRoute,
-              private spinner: NgxSpinnerService) { }
+              private spinner: NgxSpinnerService) {}
 
   ngOnInit() {
     this.spinner.show();
-    this.LoadUser();
+    this.route.data.subscribe( data => {
+      this.user = data.user;
+      this.galleryImages = this.getImages();
+    });
+
+    this.route.queryParams.subscribe(params => {
+      const selectedTab = params['tab'];
+      console.log(selectedTab);
+      this.memberTabs.tabs[selectedTab > 0 ? selectedTab : 0 ].active = true;
+    });
     this.galleryOptions = [
       {
         width: '500px',
@@ -56,11 +67,12 @@ export class MemberDetailComponent implements OnInit {
         (user: User) => {
           this.user = user;
           this.galleryImages = this.getImages();
+          this.route.queryParams.subscribe(params => {
+            const selectedTab = params.tab;
+            this.memberTabs.tabs[selectedTab > 0 ? selectedTab : 0].active = true;
+          });
         }
         , error => this.alertify.error(error)
-        , () => {
-          this.isDataLoaded = true;
-        }
       );
   }
 
@@ -76,5 +88,9 @@ export class MemberDetailComponent implements OnInit {
         });
       });
     return imageUrls;
+  }
+
+  selectTab(tabId: number) {
+    this.memberTabs.tabs[tabId].active = true;
   }
 }

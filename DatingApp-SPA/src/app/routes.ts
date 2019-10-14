@@ -1,3 +1,4 @@
+import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { MemberListComponent } from './members/member-list/member-list.component';
@@ -19,7 +20,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: 'members', component: MemberListComponent},
-      { path: 'members/:id', component: MemberDetailComponent},
+      { path: 'members/:id', component: MemberDetailComponent, resolve: {user:  MemberDetailResolver}},
       { path: 'member/edit', component: MemberEditComponent,
           canDeactivate: [PreventUnsavedChangesGuard]},
       { path: 'lists', component: ListsComponent},
