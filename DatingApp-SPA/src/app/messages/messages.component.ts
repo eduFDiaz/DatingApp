@@ -49,13 +49,14 @@ export class MessagesComponent implements OnInit {
   }
 
   DeleteMessage(messageId: number) {
-    this.userService.DeleteMessage(messageId).subscribe(
-      (response: Message) =>
-      {
-        const index = this.messages.findIndex(el => el.id === messageId);
-        this.messages.splice(index, 1);
-        console.log(this.messages);
-      }
-    , error => this.alertify.error(error) );
+    this.alertify.confirm('Are you sure you want to delete this message', () => {
+      this.userService.DeleteMessage(messageId).subscribe(
+        () => {
+          const index = this.messages.findIndex(el => el.id === messageId);
+          this.messages.splice(index, 1);
+          this.alertify.success('The message was deleted');
+        }
+      , error => this.alertify.error('Failed to delete the message') );
+    });
   }
 }
