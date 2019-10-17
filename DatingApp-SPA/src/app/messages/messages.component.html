@@ -33,15 +33,19 @@
           <div *ngIf="messageContainer != 'Outbox'">
                 <img src={{message?.senderPhotoUrl}} class="img-circle rounded-circle mr-1">
                 <strong>{{message.senderKnownAs}}</strong>
+                <img src={{message?.recipientPhotoUrl}} class="img-circle rounded-circle mr-1">
+                <strong>{{message.recipientKnownAs}}</strong>
           </div>
           <div *ngIf="messageContainer == 'Outbox'">
+                <img src={{message?.senderPhotoUrl}} class="img-circle rounded-circle mr-1">
+                <strong>{{message.senderKnownAs}}</strong>
                 <img src={{message?.recipientPhotoUrl}} class="img-circle rounded-circle mr-1">
                 <strong>{{message.recipientKnownAs}}</strong>
           </div>
         </td>
         <td>{{message.messageSentDate | timeAgo}}</td>
         <td>
-          <button class="btn btn-danger">Delete</button>
+          <button (click)="DeleteMessage(message.id)" class="btn btn-danger">Delete</button>
         </td>
       </tr>
     </table>

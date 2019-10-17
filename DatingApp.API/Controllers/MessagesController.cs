@@ -29,7 +29,9 @@ namespace DatingApp.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateMessage(int userId,[FromBody]MessageForCreationDto messageForCreationDto)
         {
-            if(userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)){
+            var sender = await _repo.GetUser(userId);
+
+            if(sender.Id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)){
                 return Unauthorized();
             }
 
@@ -46,10 +48,9 @@ namespace DatingApp.API.Controllers
 
             _repo.Add(messageToCreate);
 
-            var messageToReturn = _mapper.Map<MessageForCreationDto>(messageToCreate);
-
             if(await _repo.SaveAll())
             {
+                var messageToReturn = _mapper.Map<MessageToReturnDto>(messageToCreate);
                 return CreatedAtRoute("GetMessage", new {id = messageToCreate.Id}, messageToReturn);
             }
 
@@ -112,5 +113,37 @@ namespace DatingApp.API.Controllers
             
             return Ok(messageThread);
         }
+
+        [HttpPost("delete/{messageId}")]
+        public async Task<IActionResult> DeleteMessage(int userId, int messageId)
+        {
+            if(userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)){
+                return Unauthorized();
+            }
+
+            var messageToDelete = await _repo.GetMessage(messageId);
+            
+            if (messageToDelete.SenderId == userId){
+                messageToDelete.hasSenderDelete = true;
+            }
+            
+            if (messageToDelete.RecipientId == userId){
+                messageToDelete.hasRecipientDelete = true;
+            }
+
+            // In case of both user have deleted the message we delete the message from the repo
+            if (messageToDelete.hasRecipientDelete == true && messageToDelete.hasSenderDelete == true)
+            {
+               _repo.Delete(messageToDelete);
+            }
+
+            if (await _repo.SaveAll())
+            {
+                return NoContent();
+            }
+
+            throw new Exception("The message was not deleted");
+        }
+
     }
 }

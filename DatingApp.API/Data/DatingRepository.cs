@@ -134,15 +134,15 @@ namespace DatingApp.API.Data
             switch (messageParams.MessageContainer)
             {
                 case "Inbox" : { // Messages sent to the user
-                    messages = messages.Where(user => user.RecipientId == messageParams.UserId);
+                    messages = messages.Where(user => user.RecipientId == messageParams.UserId && user.hasRecipientDelete == false);
                     break;
                 }
                 case "Outbox" :  { // Messages the user sent
-                    messages = messages.Where(user => user.SenderId == messageParams.UserId);
+                    messages = messages.Where(user => user.SenderId == messageParams.UserId  && user.hasSenderDelete == false);
                     break;
                 }
                 default: { // Unread messages
-                    messages = messages.Where(user => user.RecipientId == messageParams.UserId && user.IsRead == false);
+                    messages = messages.Where(user => user.RecipientId == messageParams.UserId && user.hasRecipientDelete == false && user.IsRead == false);
                     break;
                 }
             }
@@ -161,8 +161,11 @@ namespace DatingApp.API.Data
             var messages = await _context.Messages
                 .Include(user => user.Sender).ThenInclude(p => p.Photos)
                 .Include(user => user.Recipient).ThenInclude(p => p.Photos)
-                .Where(message => message.RecipientId == userId && message.SenderId == recipientId
-                          || message.RecipientId == recipientId && message.SenderId == userId)
+                .Where(message => 
+                        message.RecipientId == userId && message.SenderId == recipientId
+                           && message.hasRecipientDelete == false
+                        || message.RecipientId == recipientId && message.SenderId == userId
+                           && message.hasSenderDelete == false)
                 .OrderByDescending(message => message.MessageSentDate)
                 .ToListAsync();;
 

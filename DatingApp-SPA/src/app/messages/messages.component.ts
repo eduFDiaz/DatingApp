@@ -1,6 +1,6 @@
+import { Message } from './../_models/Message';
 import { Pagination, PaginatedResult } from './../_models/pagination';
 import { Component, OnInit } from '@angular/core';
-import { Message } from '../_models/Message';
 import { User } from '../_models/User';
 import { UserService } from '../_services/user.service';
 import { AlertifyService } from '../_services/alertify.service';
@@ -48,4 +48,14 @@ export class MessagesComponent implements OnInit {
     this.loadMessages();
   }
 
+  DeleteMessage(messageId: number) {
+    this.userService.DeleteMessage(messageId).subscribe(
+      (response: Message) =>
+      {
+        const index = this.messages.findIndex(el => el.id === messageId);
+        this.messages.splice(index, 1);
+        console.log(this.messages);
+      }
+    , error => this.alertify.error(error) );
+  }
 }

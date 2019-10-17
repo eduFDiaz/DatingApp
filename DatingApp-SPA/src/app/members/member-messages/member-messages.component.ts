@@ -1,7 +1,8 @@
+import { NgForm, FormGroup } from '@angular/forms';
 import { AuthService } from './../../_services/auth.service';
 import { User } from './../../_models/User';
 import { Message } from './../../_models/Message';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { UserService } from 'src/app/_services/user.service';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { ActivatedRoute } from '@angular/router';
@@ -17,6 +18,7 @@ export class MemberMessagesComponent implements OnInit {
   sender: User;
   messageThread: Message[];
   isDataLoaded = false;
+  newMessage: any = {};
 
   constructor(private authService: AuthService,
               private userService: UserService,
@@ -35,7 +37,18 @@ export class MemberMessagesComponent implements OnInit {
       this.messageThread = response;
       this.isDataLoaded = true;
     },
-    error => { this.alertify.error(error);});
+    error => { this.alertify.error(error); });
+  }
+
+  sendNewMessage() {
+    this.newMessage.recipientId = this.recipientId;
+    this.userService.SendMessage(this.sender.id, this.newMessage).subscribe(
+      (response: Message) => {
+        console.log(response);
+        this.messageThread.unshift(response);
+        this.newMessage = '';
+      },
+      error => { this.alertify.error(error); });
   }
 
 }
