@@ -1,12 +1,12 @@
-import { NgForm, FormGroup } from '@angular/forms';
 import { AuthService } from './../../_services/auth.service';
 import { User } from './../../_models/User';
 import { Message } from './../../_models/Message';
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { UserService } from 'src/app/_services/user.service';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-member-messages',
@@ -33,6 +33,18 @@ export class MemberMessagesComponent implements OnInit {
 
   loadMessageThread() {
     this.userService.GetMessagesThread(this.sender.id, this.recipientId)
+    .pipe(
+      tap( messages => {
+        messages.forEach(
+          message => {
+            if (message.isRead === false
+                && this.authService.loggedInUser.id === message.recipientId) {
+              this.userService.MarkMessageAsRead(message.id);
+            }
+          }
+        );
+      })
+    )
     .subscribe( response => {
       this.messageThread = response;
       this.isDataLoaded = true;
@@ -46,9 +58,8 @@ export class MemberMessagesComponent implements OnInit {
       (response: Message) => {
         console.log(response);
         this.messageThread.unshift(response);
-        this.newMessage = '';
+        this.newMessage = {};
       },
       error => { this.alertify.error(error); });
   }
-
 }

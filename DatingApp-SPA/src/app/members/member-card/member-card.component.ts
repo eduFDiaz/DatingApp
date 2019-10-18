@@ -25,8 +25,4 @@ export class MemberCardComponent implements OnInit {
       this.alertify.error(error);
     });
   }
-
-  Message() {
-  }
-
 }
