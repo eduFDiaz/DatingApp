@@ -13,9 +13,9 @@
             </span>
             <div class="chat-body">
               <div class="header">
-                <strong class="primary-font">{{ message.senderKnownAs }}</strong>
-                <small class="text-muted float-left">
-                    <span class="fa fa-clock-o">{{ message.messageSentDate | timeAgo }}</span>
+                <strong class="primary-font float-left">{{ message.senderKnownAs }}</strong>
+                <small class="text-muted">
+                    <span class="fa fa-clock-o ml-1">{{ message.messageSentDate | timeAgo }}</span>
                 </small>
               </div>
               <p>{{ message.content }}</p>
@@ -23,7 +23,7 @@
           </div>
           <!-- received -->
           <div *ngIf="message.senderId != recipientId" >
-              <span class="chat-img float-right">
+              <span class="chat-img float-left">
                 <img class="rounded-circle" src="{{message.senderPhotoUrl}}" alt="{{message.senderKnownAs}}">
               </span>
               <div class="chat-body">
@@ -33,7 +33,7 @@
                       <span *ngIf="!message.isRead" class="m-1 text-danger">(unread)</span>
                       <span *ngIf="message.isRead" class="m-1 text-success">(Read {{ message.dateRead | timeAgo }})</span>
                   </small>
-                  <strong class="ml-1 primary-font float-right">{{ message.senderKnownAs }}</strong>
+                  <strong class="ml-1 primary-font float-left">{{ message.senderKnownAs }}</strong>
                 </div>
                 <p>{{ message.content }}</p>
               </div>

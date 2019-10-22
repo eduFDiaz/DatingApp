@@ -48,4 +48,8 @@ export class ListsComponent implements OnInit {
     this.loadUsers();
   }
 
+  likeEventHandler($event: User) {
+    this.loadUsers();
+  }
+
 }

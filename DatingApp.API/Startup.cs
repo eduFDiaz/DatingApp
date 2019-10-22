@@ -36,6 +36,7 @@ namespace DatingApp.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("AzureSqlConnection")));
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IDatingRepository, DatingRepository>();
             services.AddScoped<LogUserActivity>();
@@ -91,7 +92,8 @@ namespace DatingApp.API
             }
 
             // app.UseHttpsRedirection();
-            // DataSeed.SeedUsers(); // Uncomment to seed the database using "DatingApp.API\Data\UserDataSeed.json"
+            // Uncomment below line to seed the database using "DatingApp.API\Data\UserDataSeed.json"
+            // DataSeed.SeedUsers(); 
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();
             app.UseMvc();

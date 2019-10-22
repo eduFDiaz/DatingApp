@@ -94,8 +94,15 @@ namespace DatingApp.API.Controllers
             }
 
             var likeFromRepo = await _repo.GetLike(id, recipientId);
+            
             if (likeFromRepo!=null) {
-                return BadRequest($"You already liked {recipientFromRepo.KnownAs}");
+                var name = recipientFromRepo.KnownAs;
+                _repo.Delete(likeFromRepo);
+                
+                if(await _repo.SaveAll()){
+                    // pass object storing unlike state to the SPA
+                    return Ok(new {result="unlike"});
+                }
             }
 
             var newLike = new Like{
@@ -105,10 +112,12 @@ namespace DatingApp.API.Controllers
 
             _repo.Add<Like>(newLike);
             if (await _repo.SaveAll()){
-                return Ok();
+                // pass object storing like state to the SPA to 
+                // alertify to print a message then reload the 
+                return Ok(new {result="like"});
             } 
 
-            return BadRequest($"Failed to like {recipientFromRepo.KnownAs}");
+            return BadRequest($"Failed to like/unlike {recipientFromRepo.KnownAs}");
         }
     }
 }

@@ -1,3 +1,4 @@
+import { AuthService } from './../../_services/auth.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TabsetComponent } from 'ngx-bootstrap';
 
@@ -7,6 +8,7 @@ import { ActivatedRoute, NavigationEnd } from '@angular/router';
 import { UserService } from 'src/app/_services/user.service';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { LikeResult } from 'src/app/_models/LikeResult';
 
 @Component({
   selector: 'app-member-detail',
@@ -19,7 +21,8 @@ export class MemberDetailComponent implements OnInit {
   galleryImages: NgxGalleryImage[];
   @ViewChild('memberTabs', { static: true }) memberTabs: TabsetComponent;
 
-  constructor(private userService: UserService,
+  constructor(private authService: AuthService,
+              private userService: UserService,
               private alertify: AlertifyService,
               private route: ActivatedRoute,
               private spinner: NgxSpinnerService) {}
@@ -32,8 +35,7 @@ export class MemberDetailComponent implements OnInit {
     });
 
     this.route.queryParams.subscribe(params => {
-      const selectedTab = params['tab'];
-      console.log(selectedTab);
+      const selectedTab = params.tab;
       this.memberTabs.tabs[selectedTab > 0 ? selectedTab : 0 ].active = true;
     });
     this.galleryOptions = [
@@ -92,5 +94,19 @@ export class MemberDetailComponent implements OnInit {
 
   selectTab(tabId: number) {
     this.memberTabs.tabs[tabId].active = true;
+  }
+  Like() {
+    const id = this.authService.loggedInUser.id;
+    this.userService.SendLike(id, this.user.id).subscribe(
+    (response: LikeResult) => {
+      if (response.result === 'like') {
+        this.alertify.success('You liked ' + this.user.knownAs + ' 👍');
+      }
+      if (response.result === 'unlike') {
+        this.alertify.success('You unliked ' + this.user.knownAs + ' 👎');
+      }
+    }, error => {
+      this.alertify.error(error);
+    });
   }
 }

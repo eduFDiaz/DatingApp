@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-primary">
-  <div class="container">
+
   <a class="navbar-brand" [routerLink]="['/home']">Dating App</a>
   <ul *ngIf="LoggedIn()" class="navbar-nav mr-auto">
     <li class="nav-item">
@@ -12,11 +12,12 @@
       <a class="nav-link" [routerLink]="['/messages']" routerLinkActive="active">Messages</a>
     </li>
   </ul>
+  <div class="container d-flex justify-content-end">
   <div *ngIf="LoggedIn()" dropdown class="dropdown">
     <span class="mr-2">
       <img src="{{photoUrl}}">
     </span>
-    <a dropdownToggle (click)="false" class="dropdown-toggle text-light">
+    <a dropdownToggle (click)="false" class="dropdown-toggle text-white">
       Welcome {{ authService.decodedToken.unique_name | titlecase }}
     </a>
     <div *dropdownMenu class="dropdown-menu mt-3">
@@ -25,14 +26,16 @@
       <a class="dropdown-item" (click)="Logout()"><i class="fa fa-sign-out"></i> Logout</a>
     </div>
   </div>
+
   <form *ngIf="!LoggedIn()" #loginForm="ngForm" class="form-inline my-2 my-lg-0" (ngSubmit)="Login()" >
-    <input class="form-control mr-sm-2" type="text" placeholder="Username" name="username" required [(ngModel)]="model.username"/>
-    <input class="form-control mr-sm-2" type="password" placeholder="Password" name="password" required [(ngModel)]="model.password"/>
+    <input class="form-control mr-sm-2" type="text" placeholder="👤 Username" name="username" required [(ngModel)]="model.username"/>
+    <input class="form-control mr-sm-2" type="password" placeholder="🔒 Password" name="password" required [(ngModel)]="model.password"/>
     <button class="btn btn-success my-2 my-sm-0" [disabled]="!loginForm.valid" type="submit">Login</button>
   </form>
-  </div>
+
   <div class="ml-2 d-flex">
       <ui-switch size="small" (change)="changeTheme()"></ui-switch>
       <span>🌛</span>
+  </div>
   </div>
 </nav>
