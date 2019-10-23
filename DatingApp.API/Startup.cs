@@ -88,10 +88,10 @@ namespace DatingApp.API
                     });
                 }
                 );
-                // app.UseHsts();
+                app.UseHsts();
             }
 
-            // app.UseHttpsRedirection();\
+            app.UseHttpsRedirection();
             // Uncomment below line to seed the database using "DatingApp.API\Data\UserDataSeed.json"
             //DataSeed.SeedUsers(); 
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
