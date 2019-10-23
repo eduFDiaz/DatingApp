@@ -35,8 +35,8 @@ namespace DatingApp.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            //services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("AzureSqlConnection")));
+            //services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("AzureSqlConnection")));
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IDatingRepository, DatingRepository>();
             services.AddScoped<LogUserActivity>();
@@ -91,9 +91,9 @@ namespace DatingApp.API
                 // app.UseHsts();
             }
 
-            // app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();\
             // Uncomment below line to seed the database using "DatingApp.API\Data\UserDataSeed.json"
-            // DataSeed.SeedUsers(); 
+            //DataSeed.SeedUsers(); 
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();
             // Kestrel will look for index.html or other static files to use in webroot
