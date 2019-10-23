@@ -96,7 +96,16 @@ namespace DatingApp.API
             // DataSeed.SeedUsers(); 
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();
-            app.UseMvc();
+            // Kestrel will look for index.html or other static files to use in webroot
+            app.UseDefaultFiles();
+            // Kestrel will use the static files found above
+            app.UseStaticFiles();
+            app.UseMvc(routes => {
+                routes.MapSpaFallbackRoute(
+                    name: "spa-fallback",
+                    defaults: new { controller = "Fallback", action = "Index" }
+                );
+            });
         }
     }
 }

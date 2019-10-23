@@ -6,7 +6,7 @@ namespace DatingApp.API.Dtos
 {
     public class UserForDetailedDto
     {
-        private ICollection<Photo> photos;
+        //private ICollection<Photo> photos;
 
         public int Id { get; set; }
         public string Username { get; set; }
