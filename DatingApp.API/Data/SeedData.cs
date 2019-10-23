@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DatingApp.API.Models;
 using Newtonsoft.Json;
@@ -23,6 +24,7 @@ namespace DatingApp.API.Data
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;
                 user.Username = user.Username.ToLower();
+                user.LastActive = DateTime.Now;
 
                 _context.Users.Add(user);
             }

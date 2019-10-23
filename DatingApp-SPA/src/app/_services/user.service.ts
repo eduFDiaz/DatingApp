@@ -52,7 +52,14 @@ export class UserService {
   }
 
   getUser(id: number): Observable<User> {
-    return this.http.get<User>(this.baseUrl + 'users/' + id.toString());
+    return this.http.get<User>(this.baseUrl + 'users/' + id.toString())
+    .pipe(
+      map( (response: User) => {
+        // This bug was particularly hard to find 😅
+        response.lastActive = new Date(response.lastActive);
+        return response;
+      })
+    );
   }
 
   updateUser(id: number, user: User) {
