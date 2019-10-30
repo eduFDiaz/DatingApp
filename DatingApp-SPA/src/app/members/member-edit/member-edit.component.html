@@ -36,7 +36,7 @@
             <p>{{ user.created | date }}</p>
           </div>
           <div class="card-footer">
-            <button form="editForm" type="submit" [disabled]="!editForm.dirty" class="btn btn-success btn-block">Save Changes</button>
+            <button (click)="documentEditForm.ngSubmit.emit()" type="submit" [disabled]="!editForm.dirty" class="btn btn-success btn-block">Save Changes</button>
           </div>
         </div>
       </div>
@@ -45,43 +45,47 @@
       <div class="tab-panel">
         <tabset [justified]="true" class="member-tabset">
           <tab heading="Edit profile">
-            <form (ngSubmit)="updateUser()" id="editForm" #editForm="ngForm">
-              <h4>Description</h4>
-              <textarea
+            <form id="editForm" [formGroup]="editForm" (ngSubmit)="updateUser()" #documentEditForm="ngForm">
+            <!-- <form (ngSubmit)="updateUser()" id="editForm" #editForm="ngForm"> -->
+              <hr><h4>Description</h4>
+              <quill-editor [modules]="config" [(ngStyle)]="editorStyle" formControlName="introduction"></quill-editor>
+              <!-- <textarea
                 class="form-control"
                 name="introduction"
                 rows="6"
                 [(ngModel)]="user.introduction"
-              ></textarea>
-              <h4>Looking for</h4>
-              <textarea
+              ></textarea> -->
+              <hr><h4>Looking for</h4>
+              <quill-editor [modules]="config" formControlName="lookingFor"></quill-editor>
+              <!-- <textarea
                 class="form-control"
                 name="lookingFor"
                 rows="6"
                 [(ngModel)]="user.lookingFor"
-              ></textarea>
-              <h4>Interests</h4>
-              <textarea
+              ></textarea> -->
+              <hr><h4>Interests</h4>
+              <quill-editor [modules]="config" formControlName="interests"></quill-editor>
+              <!-- <textarea
                 class="form-control"
                 name="interests"
                 rows="6"
                 [(ngModel)]="user.interests"
-              ></textarea>
-              <h4>Location Details</h4>
+              ></textarea> -->
+              <hr><h4>Location Details</h4>
               <div class="form-inline d-flex justify-content-around">
                 <label for="city">City</label>
                 <input
+                  formControlName="city"
                   class="form-control"
                   name="city"
                   type="text"
-                  [(ngModel)]="user.city"
                 />
                 <label for="country">Country</label>
                 <input
                   class="form-control"
                   name="country"
                   type="text"
-                  [(ngModel)]="user.country"
+                  formControlName="country"
                 />
               </div>
             </form>
@@ -94,6 +98,7 @@
     </div>
   </div>
 </div>
+
 <ng-template #loading>
   <ngx-spinner
     bdColor="rgba(51,51,51,0.8)"

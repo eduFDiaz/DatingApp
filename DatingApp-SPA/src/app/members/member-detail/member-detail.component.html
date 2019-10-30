@@ -42,13 +42,13 @@
         <tabset [justified]="true" class="member-tabset" #memberTabs>
           <tab *ngIf="user.introduction!=null" heading="About {{ user.knownAs }}">
             <h4>Description</h4>
-            <p>{{ user.introduction }}</p>
+            <p [innerHTML]="user.introduction | keepHtml"></p>
             <h4>Looking for</h4>
-            <p>{{ user.lookingFor }}</p>
+            <p [innerHTML]="user.lookingFor | keepHtml"></p>
           </tab>
           <tab *ngIf="user.interests!=null" heading="Interests">
             <h4>Interests</h4>
-            <p>{{ user.interests }}</p>
+            <p [innerHTML]="user.interests | keepHtml"></p>
           </tab>
           <tab heading="Photos">
             <ngx-gallery

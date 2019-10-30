@@ -33,8 +33,10 @@ import { PreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.gu
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {TimeAgoPipe} from 'time-ago-pipe';
+import { TimeAgoPipe } from 'time-ago-pipe';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
+import { QuillModule } from 'ngx-quill';
+import { EscapeHtmlPipe } from './pipes/keep-html.pipe';
 
 export class CustomHammerConfig extends HammerGestureConfig  {
   overrides = {
@@ -57,7 +59,8 @@ export class CustomHammerConfig extends HammerGestureConfig  {
       MemberMessagesComponent,
       MemberEditComponent,
       PhotoEditorComponent,
-      TimeAgoPipe
+      TimeAgoPipe,
+      EscapeHtmlPipe
    ],
    imports: [
       BrowserModule,
@@ -75,7 +78,8 @@ export class CustomHammerConfig extends HammerGestureConfig  {
       BsDatepickerModule.forRoot(),
       BrowserAnimationsModule,
       PaginationModule.forRoot(),
-      ButtonsModule.forRoot()
+      ButtonsModule.forRoot(),
+      QuillModule.forRoot()
    ],
    providers: [
       AuthService,
