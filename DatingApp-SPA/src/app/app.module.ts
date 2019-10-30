@@ -38,6 +38,9 @@ import { MemberMessagesComponent } from './members/member-messages/member-messag
 import { QuillModule } from 'ngx-quill';
 import { EscapeHtmlPipe } from './pipes/keep-html.pipe';
 
+import * as quill from 'quill';
+const Quill = (quill as any).default ? (quill as any).default : quill;
+
 export class CustomHammerConfig extends HammerGestureConfig  {
   overrides = {
       pinch: { enable: false },
