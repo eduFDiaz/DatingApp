@@ -20,6 +20,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace DatingApp.API
 {
@@ -35,13 +36,19 @@ namespace DatingApp.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Adding Swagger to the App
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Dating App API", Version = "v1" });
+            });
             //services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("AzureSqlConnection")));
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IDatingRepository, DatingRepository>();
             services.AddScoped<LogUserActivity>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-            .AddJsonOptions( options => {
+            .AddJsonOptions(options =>
+            {
                 options.SerializerSettings.ReferenceLoopHandling
                 = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
@@ -50,7 +57,8 @@ namespace DatingApp.API
             services.AddTransient<SeedData>();
             services.AddAutoMapper(typeof(Startup));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => {
+                .AddJwtBearer(options =>
+                {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
@@ -83,7 +91,7 @@ namespace DatingApp.API
                         if (error != null)
                         {
                             context.Response.AddApplicationError(error.Error.Message);
-                            await context.Response.WriteAsync(error.Error.Message); 
+                            await context.Response.WriteAsync(error.Error.Message);
                         }
                     });
                 }
@@ -100,11 +108,18 @@ namespace DatingApp.API
             app.UseDefaultFiles();
             // Kestrel will use the static files found above
             app.UseStaticFiles();
-            app.UseMvc(routes => {
+            app.UseMvc(routes =>
+            {
                 routes.MapSpaFallbackRoute(
                     name: "spa-fallback",
                     defaults: new { controller = "Fallback", action = "Index" }
                 );
+            });
+            //Swagger on!
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Dating App API V1");
             });
         }
     }
