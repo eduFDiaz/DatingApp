@@ -22,6 +22,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
+
+
 namespace DatingApp.API
 {
     public class Startup
@@ -41,8 +43,44 @@ namespace DatingApp.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Dating App API", Version = "v1" });
             });
-            //services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("AzureSqlConnection")));
+            services.AddDbContext<DataContext>(x => x.UseMySql(Configuration.GetConnectionString("MySqlConnection")));
+            //services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("AzureSqlConnection")));
+            services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IDatingRepository, DatingRepository>();
+            services.AddScoped<LogUserActivity>();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            .AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling
+                = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
+            services.AddCors();
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
+            services.AddTransient<SeedData>();
+            services.AddAutoMapper(typeof(Startup));
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(Configuration.GetSection("AppSettings:Token").Value)
+                        ),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+        }
+        public void ConfigureDevelopmentServices(IServiceCollection services)
+        {
+            //Adding Swagger to the App
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Dating App API", Version = "v1" });
+            });
+            services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("AzureSqlConnection")));
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IDatingRepository, DatingRepository>();
             services.AddScoped<LogUserActivity>();
